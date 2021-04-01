@@ -1,3 +1,8 @@
+# Vue3尝试+模仿项目
+
+源地址：http://koalastothemax.com/
+view 中 home 只是一些Vue3的组合式api尝试， project 则是模仿 
+
 # Vue 3 + Typescript + Vite
 
 This template should help get you started developing with Vue 3 and Typescript in Vite.
