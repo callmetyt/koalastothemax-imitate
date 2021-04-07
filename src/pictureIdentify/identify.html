@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas></canvas>
+</body>
+
+<script>
+  let canvas = document.querySelector('canvas');
+  const width = 516;
+  const height = 512;
+  const rowNum = 128;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  let context = canvas.getContext('2d');
+
+  let image = new Image();
+  image.src = './logo.png';
+  let colorArr = [];
+  let row = [];
+  for (let i = 0; i < rowNum; i++) {
+    row.push(null)
+  }
+  for (let i = 0; i < rowNum; i++) {
+    colorArr.push(deepClone(row))
+  }
+
+  image.onload = function () {
+    context.drawImage(image, 0, 0, width, height);
+    for (let i = 0, row = 0; i < height; i = i + 4, row++) {
+      for (let j = 0, col = 0; j < height; j = j + 4, col++) {
+        let tmp = toRGB(context.getImageData(i, j, 4, 4).data);
+        colorArr[row][col] = tmp;
+        // colorArr[row][col] = toRGB(context.getImageData(i, j, 4, 4).data)
+      }
+    }
+  }
+  function toRGB(data) {
+    return `rgb(${data[24]},${data[25]},${data[26]})`
+  }
+  function deepClone(data) {
+    let clone = Object.create({});
+    if (data instanceof Array) {
+      clone = new Array;
+    }
+    for (let i in data) {
+      if (data.hasOwnProperty(i)) {
+        if (data[i] === null) {
+          clone[i] = null;
+        }
+        else if (typeof data[i] === 'object') {
+          clone[i] = deepClone(data[i])
+        } else {
+          clone[i] = data[i]
+        }
+      }
+    }
+    return clone
+  }
+</script>
+
+</html>
